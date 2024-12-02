@@ -3,9 +3,9 @@ name: Validate
 on:
   push:
     branches:
-      - '*'
+      - "*"
     paths:
-      - 'force-app/main/default/**'
+      - "force-app/main/default/**"
 
   workflow_dispatch:
 
@@ -43,7 +43,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Install Salesforce CLI
         run: |
@@ -51,7 +51,7 @@ jobs:
 
       - name: Create JWT Key File
         run: |
-          echo "${{ secrets.JWT_KEY_FILE }}" > server.key
+          echo "${{ secrets.JWT_KEY_SB }}" > server.key
 
       - name: Create Required Directories
         run: |
@@ -61,10 +61,10 @@ jobs:
       - name: Authenticate with Salesforce
         run: |
           sf org login jwt \
-            --username ${{ vars.USERNAME }} \
+            --username ${{ vars.USERNAME_SB }} \
             --jwt-key-file server.key \
-            --client-id ${{ secrets.CONSUMER_KEY }}
-      
+            --client-id ${{ secrets.CONSUMERKEY_SB }}
+
       - name: Get Test Classes
         run: |
           if [ -d "force-app/main/default/classes" ]; then
@@ -80,7 +80,7 @@ jobs:
             echo "Classes directory not found"
             echo "TEST_CLASSES=NoTestClasses" >> $GITHUB_ENV
           fi
-      
+
       - name: Run Deployment Validation
         id: validation
         continue-on-error: true
@@ -90,21 +90,21 @@ jobs:
             echo "Error: package.xml not found in manifest directory" > deployment/ValidationSummary.txt
             exit 1
           fi
-          
+
           if [ "${{ env.TEST_CLASSES }}" = "NoTestClasses" ]; then
-            echo "Executing command: sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l NoTestRun"
-            sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l NoTestRun > >(tee deployment/ValidationSummary.txt) 2>&1
+            echo "Executing command: sf project deploy validate -o ${{ vars.USERNAME_SB }} -x manifest/package.xml -l NoTestRun"
+            sf project deploy validate -o ${{ vars.USERNAME_SB }} -x manifest/package.xml -l NoTestRun > >(tee deployment/ValidationSummary.txt) 2>&1
           else
-            echo "Executing command: sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
-            sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
+            echo "Executing command: sf project deploy validate -o ${{ vars.USERNAME_SB }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
+            sf project deploy validate -o ${{ vars.USERNAME_SB }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
           fi
-          
+
       - name: Add Timestamp and Status to Validation Summary
         run: |
           echo -e "\n----------------------------------------" >> deployment/ValidationSummary.txt
           echo "Validation completed at: $(date)" >> deployment/ValidationSummary.txt
           echo "Branch: ${{ github.ref_name }}" >> deployment/ValidationSummary.txt
-          
+
           # Extract and add deploy command if validation succeeded
           DEPLOY_CMD=$(grep -o "sf project deploy quick --job-id [0-9A-Za-z]\+" deployment/ValidationSummary.txt || true)
           if [ ! -z "$DEPLOY_CMD" ]; then
