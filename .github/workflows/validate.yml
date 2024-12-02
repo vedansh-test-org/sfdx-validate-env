@@ -1,0 +1,123 @@
+name: Validate
+
+on:
+  push:
+    branches:
+      - '*'
+    paths:
+      - 'force-app/main/default/**'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check_environment:
+    runs-on: ubuntu-latest
+    outputs:
+      environment_exists: ${{ steps.check_env.outputs.environment_exists }}
+    steps:
+      - id: check_env
+        run: |
+          # Using GitHub CLI to check if environment exists
+          if gh api repos/${{ github.repository }}/environments/${{ github.ref_name }} &>/dev/null; then
+            echo "environment_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "environment_exists=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  validate:
+    needs: check_environment
+    if: needs.check_environment.outputs.environment_exists == 'true'
+    name: Validate
+    environment: ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install @salesforce/cli --global
+
+      - name: Create JWT Key File
+        run: |
+          echo "${{ secrets.JWT_KEY_FILE }}" > server.key
+
+      - name: Create Required Directories
+        run: |
+          mkdir -p deployment
+          rm deployment/ValidationSummary.txt
+
+      - name: Authenticate with Salesforce
+        run: |
+          sf org login jwt \
+            --username ${{ vars.USERNAME }} \
+            --jwt-key-file server.key \
+            --client-id ${{ secrets.CONSUMER_KEY }}
+      
+      - name: Get Test Classes
+        run: |
+          if [ -d "force-app/main/default/classes" ]; then
+            TEST_CLASSES=$(find force-app/main/default/classes -type f \( -name "*Test.cls" -o -name "*test.cls" \) -exec basename {} .cls \; | tr '\n' ' ')
+            if [ -z "$TEST_CLASSES" ]; then
+              echo "No test classes found"
+              echo "TEST_CLASSES=NoTestClasses" >> $GITHUB_ENV
+            else
+              echo "TEST_CLASSES=${TEST_CLASSES}" >> $GITHUB_ENV
+              echo "Found test classes: ${TEST_CLASSES}"
+            fi
+          else
+            echo "Classes directory not found"
+            echo "TEST_CLASSES=NoTestClasses" >> $GITHUB_ENV
+          fi
+      
+      - name: Run Deployment Validation
+        id: validation
+        continue-on-error: true
+        run: |
+          if [ ! -f "manifest/package.xml" ]; then
+            echo "Error: package.xml not found in manifest directory"
+            echo "Error: package.xml not found in manifest directory" > deployment/ValidationSummary.txt
+            exit 1
+          fi
+          
+          if [ "${{ env.TEST_CLASSES }}" = "NoTestClasses" ]; then
+            echo "Executing command: sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l NoTestRun"
+            sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l NoTestRun > >(tee deployment/ValidationSummary.txt) 2>&1
+          else
+            echo "Executing command: sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
+            sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
+          fi
+          
+      - name: Add Timestamp and Status to Validation Summary
+        run: |
+          echo -e "\n----------------------------------------" >> deployment/ValidationSummary.txt
+          echo "Validation completed at: $(date)" >> deployment/ValidationSummary.txt
+          echo "Branch: ${{ github.ref_name }}" >> deployment/ValidationSummary.txt
+          
+          # Extract and add deploy command if validation succeeded
+          DEPLOY_CMD=$(grep -o "sf project deploy quick --job-id [0-9A-Za-z]\+" deployment/ValidationSummary.txt || true)
+          if [ ! -z "$DEPLOY_CMD" ]; then
+            echo "Deploy: $DEPLOY_CMD" >> deployment/ValidationSummary.txt
+          fi
+
+      - name: Commit Validation Results
+        if: always()
+        run: |
+          if [ -f "deployment/ValidationSummary.txt" ]; then
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add deployment/ValidationSummary.txt
+            git commit -m "Add deployment validation results [skip ci]" || echo "No changes to commit"
+            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }} || echo "Failed to push changes"
+          fi
