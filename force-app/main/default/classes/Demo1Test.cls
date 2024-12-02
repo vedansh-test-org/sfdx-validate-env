@@ -17,7 +17,7 @@
  * methods. Classes defined with the @isTest annotation do not count against
  * the org size limit for all Apex scripts.
  *
- * See the Apex Language Reference for more information about Testing and Code Coverage.
+ * See the Apex Language Reference for more information about Testing and Code Coverage.1
  */
 @isTest
 private class Demo1Test {
