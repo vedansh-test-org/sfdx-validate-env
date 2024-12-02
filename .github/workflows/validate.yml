@@ -56,7 +56,7 @@ jobs:
       - name: Create Required Directories
         run: |
           mkdir -p deployment
-          rm deployment/ValidationSummary.txt
+          rm -f deployment/ValidationSummary.txt
 
       - name: Authenticate with Salesforce
         run: |
