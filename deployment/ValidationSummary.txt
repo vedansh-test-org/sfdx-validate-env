@@ -1,4 +1,4 @@
-(node:1907) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1844) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to vedansh@playful-hawk-7wabrd.com using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,36 +11,53 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfdL00000CNpHdSAL
+   Deploy ID: 0AfdL00000CNrMTSA1
    Target Org: vedansh@playful-hawk-7wabrd.com
-✘ Preparing (982ms)
+✔ Preparing (251ms)
+▶ Waiting for the org to respond…
+✔ Waiting for the org to respond (6.99s)
+▶ Deploying Metadata…
+   Components: 0/6 (0%)
+✔ Deploying Metadata (753ms)
+   Components: 6/6 (100%)
+◯ Running Tests - Skipped
+◯ Updating Source Tracking - Skipped
+▶ Done…
+✔ Done (1ms)
 
-Status: Failed
-Deploy ID: 0AfdL00000CNpHdSAL
+Status: Succeeded
+Deploy ID: 0AfdL00000CNrMTSA1
 Target Org: vedansh@playful-hawk-7wabrd.com
 
-Elapsed time: 983ms
+Elapsed time: 7.99s
 
-[1m[31mComponent Failures [2][39m[22m
- Type   Name       Problem                                                                                                  Line:Column 
-----------------------------------------------------------------------------------------------------------------------------------------
- Error  Demo1      An object 'Demo1' of type ApexClass was named in package.xml, but was not found in zipped directory                  
- Error  Demo1Test  An object 'Demo1Test' of type ApexClass was named in package.xml, but was not found in zipped directory              
+[34m[1mValidated Source[22m[39m
+ State    Name       Type       Path                                                  
+--------------------------------------------------------------------------------------
+ Created  Demo1      ApexClass  force-app/main/default/classes/Demo1.cls              
+ Created  Demo1      ApexClass  force-app/main/default/classes/Demo1.cls-meta.xml     
+ Created  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls          
+ Created  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls-meta.xml 
+ Created  Demo2      ApexClass  force-app/main/default/classes/Demo2.cls              
+ Created  Demo2      ApexClass  force-app/main/default/classes/Demo2.cls-meta.xml     
+ Created  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls          
+ Created  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls-meta.xml 
+ Created  Demo3      ApexClass  force-app/main/default/classes/Demo3.cls              
+ Created  Demo3      ApexClass  force-app/main/default/classes/Demo3.cls-meta.xml     
+ Created  Demo3Test  ApexClass  force-app/main/default/classes/Demo3Test.cls          
+ Created  Demo3Test  ApexClass  force-app/main/default/classes/Demo3Test.cls-meta.xml 
 
 
 [34m[1mTest Results Summary[22m[39m
-Passing: 0
+Passing: 3
 Failing: 0
-Total: 0
-[1m[31mError (FailedValidationError):[39m[22m Failed to validate the deployment (0AfdL00000CNpHdSAL). Due To:
-Error in Demo1 - An object 'Demo1' of type ApexClass was named in package.xml, but was not found in zipped directory
-Error in Demo1Test - An object 'Demo1Test' of type ApexClass was named in package.xml, but was not found in zipped directory
+Total: 3
+Time: 262
 
-2 component error(s)
-
-[1m[33mWarning:[39m[22m , Demo1, returned from org, but not found in the local project
-[1m[33mWarning:[39m[22m , Demo1Test, returned from org, but not found in the local project
+[1m[32mSuccessfully validated the deployment (0AfdL00000CNrMTSA1).[39m[22m
+Run "sf project deploy quick --job-id 0AfdL00000CNrMTSA1" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Mon Dec  2 06:59:52 UTC 2024
+Validation completed at: Mon Dec  2 07:05:15 UTC 2024
 Branch: main
+Deploy: sf project deploy quick --job-id 0AfdL00000CNrMTSA1
