@@ -1,4 +1,4 @@
-(node:1844) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1910) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to vedansh@playful-hawk-7wabrd.com using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,25 +11,27 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfdL00000CNrMTSA1
+   Deploy ID: 0AfdL00000CN1pNSAT
    Target Org: vedansh@playful-hawk-7wabrd.com
-✔ Preparing (251ms)
-▶ Waiting for the org to respond…
-✔ Waiting for the org to respond (6.99s)
+✔ Preparing (320ms)
+◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/6 (0%)
-✔ Deploying Metadata (753ms)
+✔ Deploying Metadata (810ms)
    Components: 6/6 (100%)
-◯ Running Tests - Skipped
+▶ Running Tests…
+   Tests: 2/3 (67%)
+✔ Running Tests (802ms)
+   Tests: 3/3 (100%)
 ◯ Updating Source Tracking - Skipped
 ▶ Done…
-✔ Done (1ms)
+✔ Done (0ms)
 
 Status: Succeeded
-Deploy ID: 0AfdL00000CNrMTSA1
+Deploy ID: 0AfdL00000CN1pNSAT
 Target Org: vedansh@playful-hawk-7wabrd.com
 
-Elapsed time: 7.99s
+Elapsed time: 1.93s
 
 [34m[1mValidated Source[22m[39m
  State    Name       Type       Path                                                  
@@ -52,12 +54,12 @@ Elapsed time: 7.99s
 Passing: 3
 Failing: 0
 Total: 3
-Time: 262
+Time: 214
 
-[1m[32mSuccessfully validated the deployment (0AfdL00000CNrMTSA1).[39m[22m
-Run "sf project deploy quick --job-id 0AfdL00000CNrMTSA1" to execute this deploy
+[1m[32mSuccessfully validated the deployment (0AfdL00000CN1pNSAT).[39m[22m
+Run "sf project deploy quick --job-id 0AfdL00000CN1pNSAT" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Mon Dec  2 07:05:15 UTC 2024
+Validation completed at: Mon Dec  2 07:10:54 UTC 2024
 Branch: main
-Deploy: sf project deploy quick --job-id 0AfdL00000CNrMTSA1
+Deploy: sf project deploy quick --job-id 0AfdL00000CN1pNSAT
