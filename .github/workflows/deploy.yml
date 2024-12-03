@@ -95,7 +95,7 @@ jobs:
           current_timestamp=$(date +%s)
           days_diff=$(( ($current_timestamp - $validation_timestamp) / 86400 ))
 
-          # Check if validation is older than 9 days
+          # Check if validation is older than 9 days (we may change it to 1 day as this is the limit {NS})
           if [ $days_diff -ge 9 ]; then
             echo "Validation is older than 9 days"
             exit 0
@@ -112,6 +112,7 @@ jobs:
           echo "Running quick deploy command..."
           ${{ env.DEPLOY_COMMAND }} -o ${{ vars.USERNAME }} > >(tee deployment/DeploymentSummary.txt) 2>&1
 
+        # run if the JobId has expires already
       - name: Get Test Classes
         if: env.HAS_DEPLOY_COMMAND != 'true'
         run: |
