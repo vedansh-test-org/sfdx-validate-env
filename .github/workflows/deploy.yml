@@ -43,7 +43,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Install Salesforce CLI
         run: |
@@ -53,7 +53,7 @@ jobs:
         run: |
           echo "${{ secrets.JWT_KEY_FILE }}" > server.key
 
-      - name: Create Required Directories
+      - name: Create Required Directories and Remove Previous Summmary
         run: |
           mkdir -p deployment
           rm -f deployment/DeploymentSummary.txt
@@ -73,7 +73,7 @@ jobs:
             echo "ValidationSummary.txt not found, skipping step"
             exit 0
           fi
-          
+
           # Read the file content
           content=$(cat deployment/ValidationSummary.txt)
 
@@ -82,25 +82,25 @@ jobs:
             echo "Validation status is not Succeeded"
             exit 0
           fi
-          
+
           # Check for deploy command
           if ! echo "$content" | grep -qE "Deploy: sf project deploy quick --job-id [A-Za-z0-9]+"; then
             echo "Deploy command not found or doesn't match expected value"
             exit 0
           fi
-          
+
           # Extract validation completion date and compare with current date
           validation_date=$(echo "$content" | grep "Validation completed at:" | cut -d':' -f2- | xargs)
           validation_timestamp=$(date -d "$validation_date" +%s)
           current_timestamp=$(date +%s)
           days_diff=$(( ($current_timestamp - $validation_timestamp) / 86400 ))
-          
+
           # Check if validation is older than 9 days
           if [ $days_diff -ge 9 ]; then
             echo "Validation is older than 9 days"
             exit 0
           fi
-          
+
           # If all checks pass, store the deploy command and set boolean flag
           deploy_command=$(echo "$content" | grep "Deploy: " | cut -d':' -f2- | xargs)
           echo "DEPLOY_COMMAND=$deploy_command" >> $GITHUB_ENV
@@ -138,7 +138,7 @@ jobs:
             echo "Error: package.xml not found in manifest directory" > deployment/DeploymentSummary.txt
             exit 1
           fi
-          
+
           if [ "${{ env.TEST_CLASSES }}" = "NoTestClasses" ]; then
             echo "Executing command: sf project deploy start -o ${{ vars.USERNAME }} -x manifest/package.xml -l NoTestRun"
             sf project deploy start -o ${{ vars.USERNAME }} -x manifest/package.xml -l NoTestRun > >(tee deployment/DeploymentSummary.txt) 2>&1
