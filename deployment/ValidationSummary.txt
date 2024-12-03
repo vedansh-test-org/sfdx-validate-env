@@ -1,4 +1,4 @@
-(node:1863) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1854) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to kaleem@pbo.com using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,55 +11,38 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfdN000008S3HpSAK
+   Deploy ID: 0AfdN000008Rz1WSAS
    Target Org: kaleem@pbo.com
-✔ Preparing (280ms)
-◯ Waiting for the org to respond - Skipped
+✔ Preparing (257ms)
+▶ Waiting for the org to respond…
+✔ Waiting for the org to respond (3.04s)
 ▶ Deploying Metadata…
-   Components: 0/6 (0%)
-   Components: 6/6 (100%)
-✔ Deploying Metadata (51.02s)
-▶ Running Tests…
-   Tests: 2/3 (67%)
-✔ Running Tests (784ms)
-   Tests: 3/3 (100%)
-◯ Updating Source Tracking - Skipped
-▶ Done…
-✔ Done (1ms)
+   Components: 0/8 (0%)
+✘ Deploying Metadata (1.52s)
+   Components: 7/8 (88%)
 
-Status: Succeeded
-Deploy ID: 0AfdN000008S3HpSAK
+Status: Failed
+Deploy ID: 0AfdN000008Rz1WSAS
 Target Org: kaleem@pbo.com
 
-Elapsed time: 52.09s
+Elapsed time: 4.82s
 
-[34m[1mValidated Source[22m[39m
- State      Name       Type       Path                                                  
-----------------------------------------------------------------------------------------
- Changed    Demo1      ApexClass  force-app/main/default/classes/Demo1.cls              
- Changed    Demo1      ApexClass  force-app/main/default/classes/Demo1.cls-meta.xml     
- Unchanged  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls          
- Unchanged  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls-meta.xml 
- Unchanged  Demo2      ApexClass  force-app/main/default/classes/Demo2.cls              
- Unchanged  Demo2      ApexClass  force-app/main/default/classes/Demo2.cls-meta.xml     
- Unchanged  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls          
- Unchanged  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls-meta.xml 
- Unchanged  Demo3      ApexClass  force-app/main/default/classes/Demo3.cls              
- Unchanged  Demo3      ApexClass  force-app/main/default/classes/Demo3.cls-meta.xml     
- Unchanged  Demo3Test  ApexClass  force-app/main/default/classes/Demo3Test.cls          
- Unchanged  Demo3Test  ApexClass  force-app/main/default/classes/Demo3Test.cls-meta.xml 
+[1m[31mComponent Failures [1][39m[22m
+ Type   Name       Problem                                     Line:Column 
+---------------------------------------------------------------------------
+ Error  Demo4Test  Type name already in use: Demo3Test (2:15)  2:15        
 
 
 [34m[1mTest Results Summary[22m[39m
-Passing: 3
+Passing: 0
 Failing: 0
-Total: 3
-Time: 439
+Total: 0
+[1m[31mError (FailedValidationError):[39m[22m Failed to validate the deployment (0AfdN000008Rz1WSAS). Due To:
+Error in Demo4Test - Type name already in use: Demo3Test (2:15)
 
-[1m[32mSuccessfully validated the deployment (0AfdN000008S3HpSAK).[39m[22m
-Run "sf project deploy quick --job-id 0AfdN000008S3HpSAK" to execute this deploy
+1 component error(s)
+
 
 ----------------------------------------
-Validation completed at: Tue Dec  3 07:09:22 UTC 2024
+Validation completed at: Tue Dec  3 07:20:35 UTC 2024
 Branch: production
-Deploy: sf project deploy quick --job-id 0AfdN000008S3HpSAK
