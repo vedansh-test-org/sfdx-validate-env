@@ -1,8 +1,22 @@
-(node:1951) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1938) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-[1m[31mError (CannotQuickDeployError):[39m[22m Job ID can't be used for quick deployment. Possible reasons include the deployment hasn't been validated, has already been deployed, or the validation expired because you ran it more than 10 days ago.
+Deploy ID: [1m0AfdN000008RyLeSAK[22m
+Deploy URL: [1mhttps://esterace.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfdN000008RyLeSAK%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp[22m
 
+[34m[1mDeployed Source[22m[39m
+ State      Name       Type       Path                  
+--------------------------------------------------------
+ Changed    Demo1      ApexClass  classes/Demo1.cls     
+ Unchanged  Demo1Test  ApexClass  classes/Demo1Test.cls 
+ Unchanged  Demo2      ApexClass  classes/Demo2.cls     
+ Unchanged  Demo2Test  ApexClass  classes/Demo2Test.cls 
+ Unchanged  Demo3      ApexClass  classes/Demo3.cls     
+ Unchanged  Demo3Test  ApexClass  classes/Demo3Test.cls 
+
+
+
+[1m[32mSuccessfully deployed (0AfdN000008RyLeSAK).[39m[22m
 
 ----------------------------------------
-Deployment completed at: Tue Dec  3 07:05:59 UTC 2024
+Deployment completed at: Tue Dec  3 07:11:13 UTC 2024
 Branch: production
