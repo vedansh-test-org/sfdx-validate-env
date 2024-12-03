@@ -1,0 +1,30 @@
+(node:1856) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ STATE     FULL NAME  TYPE       FILE PATH                                                                                                   
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Conflict  Demo1      ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo1.cls-meta.xml     
+ Conflict  Demo1      ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo1.cls              
+ Conflict  Demo1Test  ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo1Test.cls-meta.xml 
+ Conflict  Demo1Test  ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo1Test.cls          
+ Conflict  Demo2      ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo2.cls-meta.xml     
+ Conflict  Demo2      ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo2.cls              
+ Conflict  Demo2Test  ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo2Test.cls-meta.xml 
+ Conflict  Demo2Test  ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo2Test.cls          
+ Conflict  Demo3      ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo3.cls-meta.xml     
+ Conflict  Demo3      ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo3.cls              
+ Conflict  Demo3Test  ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo3Test.cls-meta.xml 
+ Conflict  Demo3Test  ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo3Test.cls          
+ Conflict  Demo4Test  ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo4Test.cls-meta.xml 
+ Conflict  Demo4Test  ApexClass  /home/runner/work/sfdx-validate-env/sfdx-validate-env/force-app/main/default/classes/Demo4Test.cls          
+
+[1m[31mError (1):[39m[22m There are changes in the org that conflict with the local changes you're trying to deploy.
+
+[2mTry this:[22m
+
+[2mTo overwrite the remote changes, rerun this command with the --ignore-conflicts flag.[22m
+[2mTo overwrite the local changes, run the "sf project retrieve start" command with the --ignore-conflicts flag.[22m
+
+
+----------------------------------------
+Deployment completed at: Tue Dec  3 07:36:22 UTC 2024
+Branch: sandbox
