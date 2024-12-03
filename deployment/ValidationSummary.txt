@@ -1,4 +1,4 @@
-(node:1860) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1899) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to kaleem@pbo.com.testdeploy using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,37 +11,38 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfC4000006n5ZWKAY
+   Deploy ID: 0AfC4000006nJpNKAU
    Target Org: kaleem@pbo.com.testdeploy
-✔ Preparing (262ms)
+✔ Preparing (273ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/7 (0%)
-✘ Deploying Metadata (2.23s)
-   Components: 6/7 (86%)
+✘ Deploying Metadata (1.53s)
+   Components: 7/8 (88%)
 
 Status: Failed
-Deploy ID: 0AfC4000006n5ZWKAY
+Deploy ID: 0AfC4000006nJpNKAU
 Target Org: kaleem@pbo.com.testdeploy
 
-Elapsed time: 2.49s
+Elapsed time: 1.80s
 
 [1m[31mComponent Failures [1][39m[22m
- Type   Name       Problem                                     Line:Column 
----------------------------------------------------------------------------
- Error  Demo4Test  Type name already in use: Demo3Test (2:15)  2:15        
+ Type   Name     Problem                                                                                                Line:Column 
+------------------------------------------------------------------------------------------------------------------------------------
+ Error  Demo3=4  An object 'Demo3=4' of type ApexClass was named in package.xml, but was not found in zipped directory              
 
 
 [34m[1mTest Results Summary[22m[39m
 Passing: 0
 Failing: 0
 Total: 0
-[1m[31mError (FailedValidationError):[39m[22m Failed to validate the deployment (0AfC4000006n5ZWKAY). Due To:
-Error in Demo4Test - Type name already in use: Demo3Test (2:15)
+[1m[31mError (FailedValidationError):[39m[22m Failed to validate the deployment (0AfC4000006nJpNKAU). Due To:
+Error in Demo3=4 - An object 'Demo3=4' of type ApexClass was named in package.xml, but was not found in zipped directory
 
 1 component error(s)
 
+[1m[33mWarning:[39m[22m , Demo3=4, returned from org, but not found in the local project
 
 ----------------------------------------
-Validation completed at: Tue Dec  3 07:34:59 UTC 2024
+Validation completed at: Tue Dec  3 07:39:24 UTC 2024
 Branch: sandbox
