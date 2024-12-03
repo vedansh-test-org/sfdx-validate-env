@@ -1,4 +1,4 @@
-(node:1855) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1863) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to kaleem@pbo.com using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,54 +11,55 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfdN000008RiVbSAK
+   Deploy ID: 0AfdN000008S3HpSAK
    Target Org: kaleem@pbo.com
-✔ Preparing (323ms)
+✔ Preparing (280ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/6 (0%)
    Components: 6/6 (100%)
-✔ Deploying Metadata (28.66s)
+✔ Deploying Metadata (51.02s)
 ▶ Running Tests…
+   Tests: 2/3 (67%)
+✔ Running Tests (784ms)
    Tests: 3/3 (100%)
-✔ Running Tests (781ms)
 ◯ Updating Source Tracking - Skipped
 ▶ Done…
-✔ Done (0ms)
+✔ Done (1ms)
 
 Status: Succeeded
-Deploy ID: 0AfdN000008RiVbSAK
+Deploy ID: 0AfdN000008S3HpSAK
 Target Org: kaleem@pbo.com
 
-Elapsed time: 29.76s
+Elapsed time: 52.09s
 
 [34m[1mValidated Source[22m[39m
- State    Name       Type       Path                                                  
---------------------------------------------------------------------------------------
- Created  Demo1      ApexClass  force-app/main/default/classes/Demo1.cls              
- Created  Demo1      ApexClass  force-app/main/default/classes/Demo1.cls-meta.xml     
- Created  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls          
- Created  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls-meta.xml 
- Created  Demo2      ApexClass  force-app/main/default/classes/Demo2.cls              
- Created  Demo2      ApexClass  force-app/main/default/classes/Demo2.cls-meta.xml     
- Created  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls          
- Created  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls-meta.xml 
- Created  Demo3      ApexClass  force-app/main/default/classes/Demo3.cls              
- Created  Demo3      ApexClass  force-app/main/default/classes/Demo3.cls-meta.xml     
- Created  Demo3Test  ApexClass  force-app/main/default/classes/Demo3Test.cls          
- Created  Demo3Test  ApexClass  force-app/main/default/classes/Demo3Test.cls-meta.xml 
+ State      Name       Type       Path                                                  
+----------------------------------------------------------------------------------------
+ Changed    Demo1      ApexClass  force-app/main/default/classes/Demo1.cls              
+ Changed    Demo1      ApexClass  force-app/main/default/classes/Demo1.cls-meta.xml     
+ Unchanged  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls          
+ Unchanged  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls-meta.xml 
+ Unchanged  Demo2      ApexClass  force-app/main/default/classes/Demo2.cls              
+ Unchanged  Demo2      ApexClass  force-app/main/default/classes/Demo2.cls-meta.xml     
+ Unchanged  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls          
+ Unchanged  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls-meta.xml 
+ Unchanged  Demo3      ApexClass  force-app/main/default/classes/Demo3.cls              
+ Unchanged  Demo3      ApexClass  force-app/main/default/classes/Demo3.cls-meta.xml     
+ Unchanged  Demo3Test  ApexClass  force-app/main/default/classes/Demo3Test.cls          
+ Unchanged  Demo3Test  ApexClass  force-app/main/default/classes/Demo3Test.cls-meta.xml 
 
 
 [34m[1mTest Results Summary[22m[39m
 Passing: 3
 Failing: 0
 Total: 3
-Time: 541
+Time: 439
 
-[1m[32mSuccessfully validated the deployment (0AfdN000008RiVbSAK).[39m[22m
-Run "sf project deploy quick --job-id 0AfdN000008RiVbSAK" to execute this deploy
+[1m[32mSuccessfully validated the deployment (0AfdN000008S3HpSAK).[39m[22m
+Run "sf project deploy quick --job-id 0AfdN000008S3HpSAK" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Tue Dec  3 06:44:08 UTC 2024
+Validation completed at: Tue Dec  3 07:09:22 UTC 2024
 Branch: production
-Deploy: sf project deploy quick --job-id 0AfdN000008RiVbSAK
+Deploy: sf project deploy quick --job-id 0AfdN000008S3HpSAK
