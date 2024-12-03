@@ -1,0 +1,22 @@
+(node:1870) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Deploy ID: [1m0AfdN000008RkcoSAC[22m
+Deploy URL: [1mhttps://esterace.my.salesforce.com/lightning/setup/DeployStatus/page?address=%2Fchangemgmt%2FmonitorDeploymentsDetails.apexp%3FasyncId%3D0AfdN000008RkcoSAC%26retURL%3D%252Fchangemgmt%252FmonitorDeployment.apexp[22m
+
+[34m[1mDeployed Source[22m[39m
+ State    Name       Type       Path                  
+------------------------------------------------------
+ Created  Demo1      ApexClass  classes/Demo1.cls     
+ Created  Demo1Test  ApexClass  classes/Demo1Test.cls 
+ Created  Demo2      ApexClass  classes/Demo2.cls     
+ Created  Demo2Test  ApexClass  classes/Demo2Test.cls 
+ Created  Demo3      ApexClass  classes/Demo3.cls     
+ Created  Demo3Test  ApexClass  classes/Demo3Test.cls 
+
+
+
+[1m[32mSuccessfully deployed (0AfdN000008RkcoSAC).[39m[22m
+
+----------------------------------------
+Deployment completed at: Tue Dec  3 07:04:29 UTC 2024
+Branch: production
