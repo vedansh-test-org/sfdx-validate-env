@@ -11,6 +11,9 @@ on:
     paths:
       - "force-app/main/default/**"
 
+  # Trigger the workflow manually
+  workflow_dispatch:
+
 permissions:
   contents: write
 
@@ -31,7 +34,6 @@ jobs:
       - name: Install Salesforce CLI
         run: |
           npm install @salesforce/cli --global
-
         # getting org and env prefix from config file
       - name: Reading Config File for Org Alias
         run: |
@@ -40,52 +42,41 @@ jobs:
             echo "config.txt file is missing. Please create the file with ORG_ALIAS and ORG_ENV variables."
             exit 1
           fi
-
           # Checking if ORG_ALIAS and ORG_ENV are defined
           ORG_ALIAS=$(grep ORG_ALIAS= config.txt | cut -d '=' -f2)
           ORG_ENV=$(grep ORG_ENV= config.txt | cut -d '=' -f2)
-
           if [ -z "$ORG_ALIAS" ]; then
             echo "Error: ORG_ALIAS is not defined in config.txt."
             exit 1
           fi
-
           if [ -z "$ORG_ENV" ]; then
             echo "Error: ORG_ENV is not defined in config.txt."
             exit 1
           fi
-
           echo "ORG_ALIAS=$ORG_ALIAS" >> $GITHUB_ENV
           echo "ORG_ENV=$ORG_ENV" >> $GITHUB_ENV
-
         # Creating variable with the convention {ORG-PREFIX_ENV-PREFIX_CONFIG-VAR eg:mimit_dev_CONSUMER_KEY}
       - name: Setting Secrets for Org
         run: |
           CLIENT_ID_SECRET="${ORG_ALIAS}_${ORG_ENV}_CONSUMER_KEY"
           SERVER_KEY_SECRET="${ORG_ALIAS}_${ORG_ENV}_JWT_KEY_FILE"
-
           # Validate secrets
           if [ -z "$CLIENT_ID_SECRET" ] || [ -z "$SERVER_KEY_SECRET" ]; then
             echo "Error: Secrets not found for ORG_ALIAS: $ORG_ALIAS"
             exit 1
           fi
-
-
           echo "CLIENT_ID_SECRET=$CLIENT_ID_SECRET" >> $GITHUB_ENV
           echo "SERVER_KEY_SECRET=$SERVER_KEY_SECRET" >> $GITHUB_ENV
-
       - name: Auth to Salesforce Org
         run: |
           echo -e "${{ secrets[env.SERVER_KEY_SECRET] }}" > ./server.key
           sf org login jwt --client-id ${{ secrets[env.CLIENT_ID_SECRET] }} \
             --jwt-key-file server.key \
             --username ${{ secrets.USERNAME }}
-
       - name: Create Required Directories
         run: |
           mkdir -p deployment
           rm -f deployment/ValidationSummary.txt
-
       - name: Get Test Classes
         run: |
           # Check if classes directory exists; if not, throw an error
@@ -104,7 +95,6 @@ jobs:
             echo "Classes directory not found"
             echo "TEST_CLASSES=NoTestClasses" >> $GITHUB_ENV
           fi
-
       - name: Run Deployment Validation
         id: validation
         continue-on-error: true
@@ -115,7 +105,6 @@ jobs:
             echo "Error: package.xml not found in manifest directory" > deployment/ValidationSummary.txt
             exit 1
           fi
-
           # If no test classes were found, use NoTestRun, otherwise use RunSpecifiedTests
           if [ "${{ env.TEST_CLASSES }}" = "NoTestClasses" ]; then
             echo "Executing command: sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l NoTestRun"
@@ -124,7 +113,6 @@ jobs:
             echo "Executing command: sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
             sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
           fi
-
       - name: Add Timestamp and Quick Deploy to Validation Summary
         if: always()
         run: |
@@ -133,33 +121,20 @@ jobs:
             echo -e "\n----------------------------------------" >> deployment/ValidationSummary.txt
             echo "Validation completed at: $(date)" >> deployment/ValidationSummary.txt
             echo "Branch: ${{ github.ref_name }}" >> deployment/ValidationSummary.txt
-
             # Extract and add deploy command if validation succeeded
             DEPLOY_CMD=$(grep -o "sf project deploy quick --job-id [0-9A-Za-z]\+" deployment/ValidationSummary.txt || true)
             if [ ! -z "$DEPLOY_CMD" ]; then
               echo "Deploy: $DEPLOY_CMD" >> deployment/ValidationSummary.txt
             fi
           fi
-
       - name: Commit Validation Summary
         if: always()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Check if ValidationSummary.txt exists, commit changes
           if [ -f "deployment/ValidationSummary.txt" ]; then
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
-
-            # if the branch is correctly checked out
-            git fetch origin
-            git checkout "${{ github.ref_name }}"
-
-            # Stage and commit the validation summary
             git add deployment/ValidationSummary.txt
             git commit -m "Add deployment validation results [skip ci]" || echo "No changes to commit"
-
-            # Push changes back to the repository
-            REPO_URL="https://${GITHUB_TOKEN}@github.com/${{ github.repository }}"
-            git push "$REPO_URL" HEAD:${{ github.ref_name }}
-          else
-            echo "ValidationSummary.txt not found. Skipping commit."
+            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }} || echo "Failed to push changes"
+          fi
