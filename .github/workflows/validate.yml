@@ -34,6 +34,7 @@ jobs:
       - name: Install Salesforce CLI
         run: |
           npm install @salesforce/cli --global
+
         # getting org and env prefix from config file
       - name: Reading Config File for Org Alias
         run: |
@@ -55,6 +56,7 @@ jobs:
           fi
           echo "ORG_ALIAS=$ORG_ALIAS" >> $GITHUB_ENV
           echo "ORG_ENV=$ORG_ENV" >> $GITHUB_ENV
+
         # Creating variable with the convention {ORG-PREFIX_ENV-PREFIX_CONFIG-VAR eg:mimit_dev_CONSUMER_KEY}
       - name: Setting Secrets for Org
         run: |
@@ -67,16 +69,22 @@ jobs:
           fi
           echo "CLIENT_ID_SECRET=$CLIENT_ID_SECRET" >> $GITHUB_ENV
           echo "SERVER_KEY_SECRET=$SERVER_KEY_SECRET" >> $GITHUB_ENV
+
+      #Authorizing to salesforce using JWT
       - name: Auth to Salesforce Org
         run: |
           echo -e "${{ secrets[env.SERVER_KEY_SECRET] }}" > ./server.key
           sf org login jwt --client-id ${{ secrets[env.CLIENT_ID_SECRET] }} \
             --jwt-key-file server.key \
             --username ${{ secrets.USERNAME }}
+
+      # Creating directories for validation summary
       - name: Create Required Directories
         run: |
           mkdir -p deployment
           rm -f deployment/ValidationSummary.txt
+
+      # Getting test classes
       - name: Get Test Classes
         run: |
           # Check if classes directory exists; if not, throw an error
@@ -95,6 +103,8 @@ jobs:
             echo "Classes directory not found"
             echo "TEST_CLASSES=NoTestClasses" >> $GITHUB_ENV
           fi
+
+      # Running validation
       - name: Run Deployment Validation
         id: validation
         continue-on-error: true
@@ -113,6 +123,8 @@ jobs:
             echo "Executing command: sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
             sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
           fi
+
+      # Adding timestamps
       - name: Add Timestamp and Quick Deploy to Validation Summary
         if: always()
         run: |
@@ -127,6 +139,8 @@ jobs:
               echo "Deploy: $DEPLOY_CMD" >> deployment/ValidationSummary.txt
             fi
           fi
+
+      # Commiting validation summary txt
       - name: Commit Validation Summary
         if: always()
         run: |
