@@ -1,4 +1,4 @@
-(node:1910) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1862) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to vedansh@playful-hawk-7wabrd.com using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,27 +11,27 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfdL00000CN1pNSAT
+   Deploy ID: 0AfdL00000CQnNzSAL
    Target Org: vedansh@playful-hawk-7wabrd.com
-✔ Preparing (320ms)
+✔ Preparing (288ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/6 (0%)
-✔ Deploying Metadata (810ms)
+✔ Deploying Metadata (773ms)
    Components: 6/6 (100%)
 ▶ Running Tests…
-   Tests: 2/3 (67%)
-✔ Running Tests (802ms)
+   Tests: 1/3 (33%)
+✔ Running Tests (774ms)
    Tests: 3/3 (100%)
 ◯ Updating Source Tracking - Skipped
 ▶ Done…
 ✔ Done (0ms)
 
 Status: Succeeded
-Deploy ID: 0AfdL00000CN1pNSAT
+Deploy ID: 0AfdL00000CQnNzSAL
 Target Org: vedansh@playful-hawk-7wabrd.com
 
-Elapsed time: 1.93s
+Elapsed time: 1.83s
 
 [34m[1mValidated Source[22m[39m
  State    Name       Type       Path                                                  
@@ -54,12 +54,12 @@ Elapsed time: 1.93s
 Passing: 3
 Failing: 0
 Total: 3
-Time: 214
+Time: 220
 
-[1m[32mSuccessfully validated the deployment (0AfdL00000CN1pNSAT).[39m[22m
-Run "sf project deploy quick --job-id 0AfdL00000CN1pNSAT" to execute this deploy
+[1m[32mSuccessfully validated the deployment (0AfdL00000CQnNzSAL).[39m[22m
+Run "sf project deploy quick --job-id 0AfdL00000CQnNzSAL" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Mon Dec  2 07:10:54 UTC 2024
+Validation completed at: Tue Dec  3 05:54:31 UTC 2024
 Branch: main
-Deploy: sf project deploy quick --job-id 0AfdL00000CN1pNSAT
+Deploy: sf project deploy quick --job-id 0AfdL00000CQnNzSAL
