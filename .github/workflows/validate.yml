@@ -6,39 +6,17 @@ on:
   push:
     # Trigger the workflow on push to any branch
     branches:
-      - '*'
+      - "*"
     # Trigger the workflow only on changes in the force-app/main/default directory
     paths:
-      - 'force-app/main/default/**'
-
-  # Trigger the workflow manually
-  workflow_dispatch:
+      - "force-app/main/default/**"
 
 permissions:
   contents: write
 
 jobs:
-  check_environment:
-    runs-on: ubuntu-latest
-    outputs:
-      environment_exists: ${{ steps.check_env.outputs.environment_exists }}
-    steps:
-      - id: check_env
-        run: |
-          # Using GitHub CLI to check if environment exists
-          if gh api repos/${{ github.repository }}/environments/${{ github.ref_name }} &>/dev/null; then
-            echo "environment_exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "environment_exists=false" >> $GITHUB_OUTPUT
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   validate:
-    needs: check_environment
-    if: needs.check_environment.outputs.environment_exists == 'true'
     name: Validate
-    environment: ${{ github.ref_name }}
     runs-on: ubuntu-latest
 
     steps:
@@ -50,36 +28,73 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Install Salesforce CLI
         run: |
           npm install @salesforce/cli --global
 
-      - name: Create JWT Key File
+        # getting org and env prefix from config file
+      - name: Reading Config File for Org Alias
         run: |
-          echo "${{ secrets.JWT_KEY_FILE }}" > server.key
+          # Checking if config.txt exists with Exact variable name
+          if [ ! -f "config.txt" ]; then
+            echo "config.txt file is missing. Please create the file with ORG_ALIAS and ORG_ENV variables."
+            exit 1
+          fi
+
+          # Checking if ORG_ALIAS and ORG_ENV are defined
+          ORG_ALIAS=$(grep ORG_ALIAS= config.txt | cut -d '=' -f2)
+          ORG_ENV=$(grep ORG_ENV= config.txt | cut -d '=' -f2)
+
+          if [ -z "$ORG_ALIAS" ]; then
+            echo "Error: ORG_ALIAS is not defined in config.txt."
+            exit 1
+          fi
+
+          if [ -z "$ORG_ENV" ]; then
+            echo "Error: ORG_ENV is not defined in config.txt."
+            exit 1
+          fi
+
+          echo "ORG_ALIAS=$ORG_ALIAS" >> $GITHUB_ENV
+          echo "ORG_ENV=$ORG_ENV" >> $GITHUB_ENV
+
+        # Creating variable with the convention {ORG-PREFIX_ENV-PREFIX_CONFIG-VAR eg:mimit_dev_CONSUMER_KEY}
+      - name: Setting Secrets for Org
+        run: |
+          CLIENT_ID_SECRET="${ORG_ALIAS}_${ORG_ENV}_CONSUMER_KEY"
+          SERVER_KEY_SECRET="${ORG_ALIAS}_${ORG_ENV}_JWT_KEY_FILE"
+
+          # Validate secrets
+          if [ -z "$CLIENT_ID_SECRET" ] || [ -z "$SERVER_KEY_SECRET" ]; then
+            echo "Error: Secrets not found for ORG_ALIAS: $ORG_ALIAS"
+            exit 1
+          fi
+
+
+          echo "CLIENT_ID_SECRET=$CLIENT_ID_SECRET" >> $GITHUB_ENV
+          echo "SERVER_KEY_SECRET=$SERVER_KEY_SECRET" >> $GITHUB_ENV
+
+      - name: Auth to Salesforce Org
+        run: |
+          echo -e "${{ secrets[env.SERVER_KEY_SECRET] }}" > ./server.key
+          sf org login jwt --client-id ${{ secrets[env.CLIENT_ID_SECRET] }} \
+            --jwt-key-file server.key \
+            --username ${{ secrets.USERNAME }} \
+            --alias ${{ env.ORG_ALIAS }} --set-default
 
       - name: Create Required Directories
         run: |
           mkdir -p deployment
           rm -f deployment/ValidationSummary.txt
 
-      - name: Authenticate with Salesforce
-        run: |
-          sf org login jwt \
-            --username ${{ vars.USERNAME }} \
-            --jwt-key-file server.key \
-            --client-id ${{ secrets.CONSUMER_KEY }}
-      
       - name: Get Test Classes
         run: |
-          # Check if classes directory exists
+          # Check if classes directory exists; if not, throw an error
           if [ -d "force-app/main/default/classes" ]; then
-
             # Get test classes
             TEST_CLASSES=$(find force-app/main/default/classes -type f \( -name "*Test.cls" -o -name "*test.cls" \) -exec basename {} .cls \; | tr '\n' ' ')
-            
             # Check if test classes were found
             if [ -z "$TEST_CLASSES" ]; then
               echo "No test classes found"
@@ -88,13 +103,11 @@ jobs:
               echo "TEST_CLASSES=${TEST_CLASSES}" >> $GITHUB_ENV
               echo "Found test classes: ${TEST_CLASSES}"
             fi
-          
-          # If classes directory doesn't exist, set TEST_CLASSES to NoTestClasses
           else
             echo "Classes directory not found"
             echo "TEST_CLASSES=NoTestClasses" >> $GITHUB_ENV
           fi
-      
+
       - name: Run Deployment Validation
         id: validation
         continue-on-error: true
@@ -105,16 +118,16 @@ jobs:
             echo "Error: package.xml not found in manifest directory" > deployment/ValidationSummary.txt
             exit 1
           fi
-          
-          # If no test classes were found, use NoTestRun, otherwise use RunSpecifiedTests
+
+          # If no test classes were found, use NoTestRun; otherwise, use RunSpecifiedTests
           if [ "${{ env.TEST_CLASSES }}" = "NoTestClasses" ]; then
-            echo "Executing command: sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l NoTestRun"
-            sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l NoTestRun > >(tee deployment/ValidationSummary.txt) 2>&1
+            echo "Executing command: sf project deploy validate -a ${{ env.ORG_ALIAS }} -x manifest/package.xml -l NoTestRun"
+            sf project deploy validate -a ${{ env.ORG_ALIAS }} -x manifest/package.xml -l NoTestRun > >(tee deployment/ValidationSummary.txt) 2>&1
           else
-            echo "Executing command: sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
-            sf project deploy validate -o ${{ vars.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
+            echo "Executing command: sf project deploy validate -a ${{ env.ORG_ALIAS }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
+            sf project deploy validate -a ${{ env.ORG_ALIAS }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
           fi
-          
+
       - name: Add Timestamp and Quick Deploy to Validation Summary
         if: always()
         run: |
@@ -123,7 +136,7 @@ jobs:
             echo -e "\n----------------------------------------" >> deployment/ValidationSummary.txt
             echo "Validation completed at: $(date)" >> deployment/ValidationSummary.txt
             echo "Branch: ${{ github.ref_name }}" >> deployment/ValidationSummary.txt
-            
+
             # Extract and add deploy command if validation succeeded
             DEPLOY_CMD=$(grep -o "sf project deploy quick --job-id [0-9A-Za-z]\+" deployment/ValidationSummary.txt || true)
             if [ ! -z "$DEPLOY_CMD" ]; then
@@ -134,11 +147,10 @@ jobs:
       - name: Commit Validation Summary
         if: always()
         run: |
-          # Check if ValidationSummary.txt exists, commit changes
+          # Check if ValidationSummary.txt exists; commit changes
           if [ -f "deployment/ValidationSummary.txt" ]; then
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git add deployment/ValidationSummary.txt
             git commit -m "Add deployment validation results [skip ci]" || echo "No changes to commit"
             git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }} || echo "Failed to push changes"
-          fi

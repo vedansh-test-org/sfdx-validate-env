@@ -77,7 +77,7 @@ jobs:
           # Read the file content
           content=$(cat deployment/ValidationSummary.txt)
 
-          # Check for success status
+          # Check for success status (didn't exit OF)
           if ! echo "$content" | grep -q "Status: Succeeded"; then
             echo "Validation status is not Succeeded"
             exit 0
@@ -126,7 +126,7 @@ jobs:
             fi
           else
             echo "Classes directory not found"
-            echo "TEST_CLASSES=NoTestClasses" >> $GITHUB_ENV
+            echo "TEST_CLASSES=NoTestClasses" >> $GITHUB_ENV 
           fi
 
       - name: Run Deployment
