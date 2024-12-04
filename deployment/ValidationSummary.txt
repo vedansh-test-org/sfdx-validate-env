@@ -1,4 +1,4 @@
-(node:1819) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1855) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to kaleem@pbo.com.testdeploy using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,15 +11,17 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfC4000006o7nfKAA
+   Deploy ID: 0AfC4000006o7fiKAA
    Target Org: kaleem@pbo.com.testdeploy
-✔ Preparing (289ms)
+✔ Preparing (937ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/6 (0%)
    Components: 6/6 (100%)
-✔ Deploying Metadata (39.55s)
-◯ Running Tests - Skipped
+✔ Deploying Metadata (44.52s)
+▶ Running Tests…
+   Tests: 3/4 (75%)
+✔ Running Tests (1.34s)
 ▶ Updating Source Tracking…
    Members: 3/3 (100%)
 ✔ Updating Source Tracking (5ms)
@@ -27,10 +29,10 @@ Stages:
 ✔ Done (0ms)
 
 Status: Succeeded
-Deploy ID: 0AfC4000006o7nfKAA
+Deploy ID: 0AfC4000006o7fiKAA
 Target Org: kaleem@pbo.com.testdeploy
 
-Elapsed time: 39.85s
+Elapsed time: 46.81s
 
 [34m[1mValidated Source[22m[39m
  State      Name       Type       Path                                                  
@@ -53,12 +55,12 @@ Elapsed time: 39.85s
 Passing: 4
 Failing: 0
 Total: 4
-Time: 426
+Time: 459
 
-[1m[32mSuccessfully validated the deployment (0AfC4000006o7nfKAA).[39m[22m
-Run "sf project deploy quick --job-id 0AfC4000006o7nfKAA" to execute this deploy
+[1m[32mSuccessfully validated the deployment (0AfC4000006o7fiKAA).[39m[22m
+Run "sf project deploy quick --job-id 0AfC4000006o7fiKAA" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Wed Dec  4 08:05:12 UTC 2024
+Validation completed at: Wed Dec  4 09:19:17 UTC 2024
 Branch: main
-Deploy: sf project deploy quick --job-id 0AfC4000006o7nfKAA
+Deploy: sf project deploy quick --job-id 0AfC4000006o7fiKAA
