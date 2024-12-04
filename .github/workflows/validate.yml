@@ -143,6 +143,8 @@ jobs:
 
       - name: Commit Validation Summary
         if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -f "deployment/ValidationSummary.txt" ]; then
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -150,10 +152,14 @@ jobs:
 
             # if the branch is correctly checked out
             git fetch origin
-            git checkout ${{ github.ref_name }}
+            git checkout "${{ github.ref_name }}"
+
+            # Stage and commit the validation summary
             git add deployment/ValidationSummary.txt
             git commit -m "Add deployment validation results [skip ci]" || echo "No changes to commit"
 
-            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
+            # Push changes back to the repository
+            REPO_URL="https://${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+            git push "$REPO_URL" HEAD:${{ github.ref_name }}
           else
             echo "ValidationSummary.txt not found. Skipping commit."
