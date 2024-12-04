@@ -1,4 +1,4 @@
-(node:1929) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1837) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to kaleem@pbo.com.testdeploy using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,28 +11,27 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfC4000006o82CKAQ
+   Deploy ID: 0AfC4000006oCNYKA2
    Target Org: kaleem@pbo.com.testdeploy
-✔ Preparing (282ms)
+✔ Preparing (844ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/6 (0%)
    Components: 6/6 (100%)
-✔ Deploying Metadata (19.60s)
+✔ Deploying Metadata (43.17s)
 ▶ Running Tests…
-   Tests: 1/4 (25%)
-✔ Running Tests (1.36s)
+✔ Running Tests (1.18s)
 ▶ Updating Source Tracking…
    Members: 3/3 (100%)
-✔ Updating Source Tracking (4ms)
+✔ Updating Source Tracking (6ms)
 ▶ Done…
 ✔ Done (1ms)
 
 Status: Succeeded
-Deploy ID: 0AfC4000006o82CKAQ
+Deploy ID: 0AfC4000006oCNYKA2
 Target Org: kaleem@pbo.com.testdeploy
 
-Elapsed time: 21.26s
+Elapsed time: 45.21s
 
 [34m[1mValidated Source[22m[39m
  State      Name       Type       Path                                                  
@@ -55,12 +54,12 @@ Elapsed time: 21.26s
 Passing: 4
 Failing: 0
 Total: 4
-Time: 406
+Time: 453
 
-[1m[32mSuccessfully validated the deployment (0AfC4000006o82CKAQ).[39m[22m
-Run "sf project deploy quick --job-id 0AfC4000006o82CKAQ" to execute this deploy
+[1m[32mSuccessfully validated the deployment (0AfC4000006oCNYKA2).[39m[22m
+Run "sf project deploy quick --job-id 0AfC4000006oCNYKA2" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Wed Dec  4 09:42:57 UTC 2024
+Validation completed at: Wed Dec  4 10:57:20 UTC 2024
 Branch: Sandbox
-Deploy: sf project deploy quick --job-id 0AfC4000006o82CKAQ
+Deploy: sf project deploy quick --job-id 0AfC4000006oCNYKA2
