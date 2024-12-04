@@ -81,8 +81,7 @@ jobs:
           echo -e "${{ secrets[env.SERVER_KEY_SECRET] }}" > ./server.key
           sf org login jwt --client-id ${{ secrets[env.CLIENT_ID_SECRET] }} \
             --jwt-key-file server.key \
-            --username ${{ secrets.USERNAME }} \
-            --alias ${{ env.ORG_ALIAS }} --set-default
+            --username ${{ secrets.USERNAME }}
 
       - name: Create Required Directories
         run: |
@@ -119,13 +118,13 @@ jobs:
             exit 1
           fi
 
-          # If no test classes were found, use NoTestRun; otherwise, use RunSpecifiedTests
+          # If no test classes were found, use NoTestRun, otherwise use RunSpecifiedTests
           if [ "${{ env.TEST_CLASSES }}" = "NoTestClasses" ]; then
-            echo "Executing command: sf project deploy validate -a ${{ env.ORG_ALIAS }} -x manifest/package.xml -l NoTestRun"
-            sf project deploy validate -a ${{ env.ORG_ALIAS }} -x manifest/package.xml -l NoTestRun > >(tee deployment/ValidationSummary.txt) 2>&1
+            echo "Executing command: sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l NoTestRun"
+            sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l NoTestRun > >(tee deployment/ValidationSummary.txt) 2>&1
           else
-            echo "Executing command: sf project deploy validate -a ${{ env.ORG_ALIAS }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
-            sf project deploy validate -a ${{ env.ORG_ALIAS }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
+            echo "Executing command: sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }}"
+            sf project deploy validate -o ${{ secrets.USERNAME }} -x manifest/package.xml -l RunSpecifiedTests -t ${{ env.TEST_CLASSES }} > >(tee deployment/ValidationSummary.txt) 2>&1
           fi
 
       - name: Add Timestamp and Quick Deploy to Validation Summary
