@@ -19,49 +19,55 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
 
+      # Install JDK
       - name: Install JDK
         uses: actions/setup-java@v3
         with:
           java-version: "17"
           distribution: "temurin"
 
+      # Install Salesforce CLI
       - name: Install Salesforce CLI
         run: |
           npm install @salesforce/cli --global
 
+      # Install Salesforce Scanner Plugin
       - name: Install Salesforce Scanner Plugin
         run: |
           sf plugins install @salesforce/sfdx-scanner
 
+      # Create directories for scanner results
       - name: Create Required Directories
         run: |
           mkdir -p code-scanner
           rm -f code-scanner/Results.csv
           rm -f code-scanner/Results.html
 
-      # Running Salesforce CLI Scanner for CSV
+      # Run Salesforce CLI Scanner for CSV
       - name: Run Salesforce Code Scan (CSV)
         id: code-scan-csv
         continue-on-error: true
         run: |
           sf scanner run --target "./force-app" -e "pmd,eslint,retire-js,sfge" -f csv -o "code-scanner/Results.csv"
 
-      # Running Salesforce CLI Scanner for HTML
+      # Run Salesforce CLI Scanner for HTML
       - name: Run Salesforce Code Scan (HTML)
         id: code-scan-html
         continue-on-error: true
         run: |
           sf scanner run --target "./force-app" -e "pmd,eslint,retire-js,sfge" -f html -o "code-scanner/Results.html"
 
-      # Adding Timestamp to Scanner Results
+      # Add Timestamp to Scanner Results
       - name: Adding Timestamp to Scanner Results
         if: always()
         run: |
@@ -73,9 +79,14 @@ jobs:
             fi
           done
 
-      # Commiting and Pushing Scanner Results
+      # Commit and Push Scanner Results
       - name: Commit and Push Scanner Results
         if: always()
         run: |
           if [ -f "code-scanner/Results.csv" ] || [ -f "code-scanner/Results.html" ]; then
-            git config --local user.email "github-actions[bot]@users.noreply
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add code-scanner/Results.csv code-scanner/Results.html
+            git commit -m "Add code scan results [skip ci]" || echo "No changes to commit"
+            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }} || echo "Failed to push changes"
+          fi
