@@ -1,4 +1,4 @@
-(node:1785) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1904) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to kaleem@pbo.com.testdeploy using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,35 +11,35 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfC4000006pUgYKAU
+   Deploy ID: 0AfC4000006paFiKAI
    Target Org: kaleem@pbo.com.testdeploy
-✔ Preparing (285ms)
+✔ Preparing (240ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/6 (0%)
    Components: 6/6 (100%)
-✔ Deploying Metadata (19.26s)
+✔ Deploying Metadata (21.53s)
 ▶ Running Tests…
-✔ Running Tests (1.32s)
+✔ Running Tests (1.19s)
 ▶ Updating Source Tracking…
-   Members: 3/3 (100%)
-✔ Updating Source Tracking (5ms)
+   Members: 4/4 (100%)
+✔ Updating Source Tracking (6ms)
 ▶ Done…
 ✔ Done (0ms)
 
 Status: Succeeded
-Deploy ID: 0AfC4000006pUgYKAU
+Deploy ID: 0AfC4000006paFiKAI
 Target Org: kaleem@pbo.com.testdeploy
 
-Elapsed time: 20.87s
+Elapsed time: 22.97s
 
 [34m[1mValidated Source[22m[39m
  State      Name       Type       Path                                                  
 ----------------------------------------------------------------------------------------
  Changed    Demo1      ApexClass  force-app/main/default/classes/Demo1.cls              
  Changed    Demo1      ApexClass  force-app/main/default/classes/Demo1.cls-meta.xml     
- Unchanged  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls          
- Unchanged  Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls-meta.xml 
+ Changed    Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls          
+ Changed    Demo1Test  ApexClass  force-app/main/default/classes/Demo1Test.cls-meta.xml 
  Changed    Demo2      ApexClass  force-app/main/default/classes/Demo2.cls              
  Changed    Demo2      ApexClass  force-app/main/default/classes/Demo2.cls-meta.xml     
  Unchanged  Demo2Test  ApexClass  force-app/main/default/classes/Demo2Test.cls          
@@ -54,18 +54,12 @@ Elapsed time: 20.87s
 Passing: 4
 Failing: 0
 Total: 4
-Time: 353
+Time: 366
 
-[1m[32mSuccessfully validated the deployment (0AfC4000006pUgYKAU).[39m[22m
-Run "sf project deploy quick --job-id 0AfC4000006pUgYKAU" to execute this deploy
-
-----------------------------------------
-Validation completed at: Fri Dec  6 05:22:29 UTC 2024
-Branch: Sandbox
-Deploy: sf project deploy quick --job-id 0AfC4000006pUgYKAU
+[1m[32mSuccessfully validated the deployment (0AfC4000006paFiKAI).[39m[22m
+Run "sf project deploy quick --job-id 0AfC4000006paFiKAI" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Fri Dec  6 05:23:59 UTC 2024
+Validation completed at: Fri Dec  6 06:59:19 UTC 2024
 Branch: Sandbox
-Deploy: sf project deploy quick --job-id 0AfC4000006pUgYKAU
-sf project deploy quick --job-id 0AfC4000006pUgYKAU
+Deploy: sf project deploy quick --job-id 0AfC4000006paFiKAI
