@@ -31,18 +31,18 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: "17"
-          distribution: "temurin" # distribution
+          distribution: "temurin"
 
       - name: Install Salesforce CLI
         run: |
           npm install @salesforce/cli --global
 
-        # Scanner Plugin installation
+      # Installing Salesforce Scanner Plugin
       - name: Install Salesforce Scanner Plugin
         run: |
           sf plugins install @salesforce/sfdx-scanner
 
-      # Directories for Scanner Results
+      # Creating directories for scanner results
       - name: Create Required Directories
         run: |
           mkdir -p code-scanner
@@ -53,8 +53,9 @@ jobs:
         id: code-scan
         continue-on-error: true
         run: |
-          sf scanner run -p "./" -e "pmd,eslint,retire-js,sfge" -f csv -o "code-scanner/Results.csv"
+          sf scanner run --target "./force-app" -e "pmd,eslint,retire-js,sfge" -f csv -o "code-scanner/Results.csv"
 
+      # Adding Timestamp to Scanner Results
       - name: Adding Timestamp to Scanner Results
         if: always()
         run: |
@@ -64,7 +65,7 @@ jobs:
             echo "Branch: ${{ github.ref_name }}" >> code-scanner/Results.csv
           fi
 
-      # Commiting and Pushing Scanner Results
+      # Commit and Push Scanner Results
       - name: Commit and Push Scanner Results
         if: always()
         run: |
@@ -74,3 +75,4 @@ jobs:
             git add code-scanner/Results.csv
             git commit -m "Add code scan results [skip ci]" || echo "No changes to commit"
             git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }} || echo "Failed to push changes"
+          fi
