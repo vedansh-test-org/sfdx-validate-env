@@ -1,4 +1,4 @@
-(node:1837) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1833) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to kaleem@pbo.com.testdeploy using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,27 +11,27 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfC4000006oCNYKA2
+   Deploy ID: 0AfC4000006pVG2KAM
    Target Org: kaleem@pbo.com.testdeploy
-✔ Preparing (844ms)
+✔ Preparing (332ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/6 (0%)
    Components: 6/6 (100%)
-✔ Deploying Metadata (43.17s)
+✔ Deploying Metadata (20.96s)
 ▶ Running Tests…
-✔ Running Tests (1.18s)
+✔ Running Tests (1.35s)
 ▶ Updating Source Tracking…
    Members: 3/3 (100%)
-✔ Updating Source Tracking (6ms)
+✔ Updating Source Tracking (5ms)
 ▶ Done…
 ✔ Done (1ms)
 
 Status: Succeeded
-Deploy ID: 0AfC4000006oCNYKA2
+Deploy ID: 0AfC4000006pVG2KAM
 Target Org: kaleem@pbo.com.testdeploy
 
-Elapsed time: 45.21s
+Elapsed time: 22.64s
 
 [34m[1mValidated Source[22m[39m
  State      Name       Type       Path                                                  
@@ -54,12 +54,12 @@ Elapsed time: 45.21s
 Passing: 4
 Failing: 0
 Total: 4
-Time: 453
+Time: 343
 
-[1m[32mSuccessfully validated the deployment (0AfC4000006oCNYKA2).[39m[22m
-Run "sf project deploy quick --job-id 0AfC4000006oCNYKA2" to execute this deploy
+[1m[32mSuccessfully validated the deployment (0AfC4000006pVG2KAM).[39m[22m
+Run "sf project deploy quick --job-id 0AfC4000006pVG2KAM" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Wed Dec  4 10:57:20 UTC 2024
+Validation completed at: Fri Dec  6 05:04:39 UTC 2024
 Branch: Sandbox
-Deploy: sf project deploy quick --job-id 0AfC4000006oCNYKA2
+Deploy: sf project deploy quick --job-id 0AfC4000006pVG2KAM
