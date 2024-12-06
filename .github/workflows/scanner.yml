@@ -76,6 +76,7 @@ jobs:
               echo -e "\n----------------------------------------" >> "$file"
               echo "Code Scan completed at: $(date)" >> "$file"
               echo "Branch: ${{ github.ref_name }}" >> "$file"
+              cat "code-scanner/Results.csv"
             fi
           done
 

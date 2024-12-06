@@ -12,6 +12,5 @@ public with sharing class Demo1 {
      */
     public static void main() {
         System.debug(LoggingLevel.INFO, 'Hello World 1');
-        System.debug(LoggingLevel.INFO, 'Hello World 1');
     }
 }
