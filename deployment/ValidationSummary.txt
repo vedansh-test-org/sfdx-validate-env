@@ -1,4 +1,4 @@
-(node:1834) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(node:1785) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 Validating Deployment of v62.0 metadata to kaleem@pbo.com.testdeploy using the v62.0 SOAP API.
 ───── Validating Deployment ─────
@@ -11,15 +11,16 @@ Stages:
 6. Done
 
 ▶ Preparing…
-   Deploy ID: 0AfC4000006pTHUKA2
+   Deploy ID: 0AfC4000006pUgYKAU
    Target Org: kaleem@pbo.com.testdeploy
-✔ Preparing (242ms)
+✔ Preparing (285ms)
 ◯ Waiting for the org to respond - Skipped
 ▶ Deploying Metadata…
    Components: 0/6 (0%)
    Components: 6/6 (100%)
-✔ Deploying Metadata (20.54s)
-◯ Running Tests - Skipped
+✔ Deploying Metadata (19.26s)
+▶ Running Tests…
+✔ Running Tests (1.32s)
 ▶ Updating Source Tracking…
    Members: 3/3 (100%)
 ✔ Updating Source Tracking (5ms)
@@ -27,10 +28,10 @@ Stages:
 ✔ Done (0ms)
 
 Status: Succeeded
-Deploy ID: 0AfC4000006pTHUKA2
+Deploy ID: 0AfC4000006pUgYKAU
 Target Org: kaleem@pbo.com.testdeploy
 
-Elapsed time: 20.78s
+Elapsed time: 20.87s
 
 [34m[1mValidated Source[22m[39m
  State      Name       Type       Path                                                  
@@ -53,12 +54,12 @@ Elapsed time: 20.78s
 Passing: 4
 Failing: 0
 Total: 4
-Time: 329
+Time: 353
 
-[1m[32mSuccessfully validated the deployment (0AfC4000006pTHUKA2).[39m[22m
-Run "sf project deploy quick --job-id 0AfC4000006pTHUKA2" to execute this deploy
+[1m[32mSuccessfully validated the deployment (0AfC4000006pUgYKAU).[39m[22m
+Run "sf project deploy quick --job-id 0AfC4000006pUgYKAU" to execute this deploy
 
 ----------------------------------------
-Validation completed at: Fri Dec  6 05:06:35 UTC 2024
+Validation completed at: Fri Dec  6 05:22:29 UTC 2024
 Branch: Sandbox
-Deploy: sf project deploy quick --job-id 0AfC4000006pTHUKA2
+Deploy: sf project deploy quick --job-id 0AfC4000006pUgYKAU
