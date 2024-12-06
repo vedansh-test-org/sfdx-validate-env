@@ -37,42 +37,45 @@ jobs:
         run: |
           npm install @salesforce/cli --global
 
-      # Installing Salesforce Scanner Plugin
       - name: Install Salesforce Scanner Plugin
         run: |
           sf plugins install @salesforce/sfdx-scanner
 
-      # Creating directories for scanner results
       - name: Create Required Directories
         run: |
           mkdir -p code-scanner
           rm -f code-scanner/Results.csv
+          rm -f code-scanner/Results.html
 
-      # Running Salesforce CLI Scanner
-      - name: Run Salesforce Code Scan
-        id: code-scan
+      # Running Salesforce CLI Scanner for CSV
+      - name: Run Salesforce Code Scan (CSV)
+        id: code-scan-csv
         continue-on-error: true
         run: |
           sf scanner run --target "./force-app" -e "pmd,eslint,retire-js,sfge" -f csv -o "code-scanner/Results.csv"
+
+      # Running Salesforce CLI Scanner for HTML
+      - name: Run Salesforce Code Scan (HTML)
+        id: code-scan-html
+        continue-on-error: true
+        run: |
+          sf scanner run --target "./force-app" -e "pmd,eslint,retire-js,sfge" -f html -o "code-scanner/Results.html"
 
       # Adding Timestamp to Scanner Results
       - name: Adding Timestamp to Scanner Results
         if: always()
         run: |
-          if [ -f "code-scanner/Results.csv" ]; then
-            echo -e "\n----------------------------------------" >> code-scanner/Results.csv
-            echo "Code Scan completed at: $(date)" >> code-scanner/Results.csv
-            echo "Branch: ${{ github.ref_name }}" >> code-scanner/Results.csv
-          fi
+          for file in code-scanner/Results.csv code-scanner/Results.html; do
+            if [ -f "$file" ]; then
+              echo -e "\n----------------------------------------" >> "$file"
+              echo "Code Scan completed at: $(date)" >> "$file"
+              echo "Branch: ${{ github.ref_name }}" >> "$file"
+            fi
+          done
 
-      # Commit and Push Scanner Results
+      # Commiting and Pushing Scanner Results
       - name: Commit and Push Scanner Results
         if: always()
         run: |
-          if [ -f "code-scanner/Results.csv" ]; then
-            git config --local user.email "github-actions[bot]@users.noreply.github.com"
-            git config --local user.name "github-actions[bot]"
-            git add code-scanner/Results.csv
-            git commit -m "Add code scan results [skip ci]" || echo "No changes to commit"
-            git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }} || echo "Failed to push changes"
-          fi
+          if [ -f "code-scanner/Results.csv" ] || [ -f "code-scanner/Results.html" ]; then
+            git config --local user.email "github-actions[bot]@users.noreply
